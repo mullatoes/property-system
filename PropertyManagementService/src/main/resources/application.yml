@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://127.0.0.1:5433/propertymanagementservice
+    hikari:
+      connectionTimeout: '20000'
+      maximumPoolSize: '5'
+    password: Admin@123
+  application:
+    name: PropertyManagementService
+  jpa:
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+server:
+  port: '2020'
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

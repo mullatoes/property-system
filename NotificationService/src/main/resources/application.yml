@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    username: postgres
+    password: Admin@123
+    url: jdbc:postgresql://127.0.0.1:5433/notificationservice
+    hikari:
+      connectionTimeout: '20000'
+      maximumPoolSize: '5'
+  application:
+    name: NotificationService
+  jpa:
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+server:
+  port: '2027'
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+            required: 'true'
+          timeout: '5000'
+          auth: 'true'
+          connectiontimeout: '5000'
+          writetimeout: '5000'
+      host: smtp.gmail.com
+      username: jaydevsengineer@gmail.com
+      password: bayb wuyq xezo gezh
+      port: '587'
+  smtp:
+    debug: 'true'
