@@ -51,4 +51,20 @@ public class TenantController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseWrapper<Tenant>> getTenantById(@PathVariable Long id) {
+
+        System.out.println("We are getting here .... ");
+
+        Tenant tenant = tenantService.getTenantById(id);
+
+      /*  if (tenant == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new UnSuccessfulWrapper<>("failure", "Tenant not found with id: " + id));
+        }*/
+
+        return ResponseEntity.ok(new ResponseWrapper<>("success",
+                "All tenants retrieved successfully", 1, tenant));
+    }
 }

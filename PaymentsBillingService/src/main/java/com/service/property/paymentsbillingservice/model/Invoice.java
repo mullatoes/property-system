@@ -1,5 +1,6 @@
 package com.service.property.paymentsbillingservice.model;
 
+import com.service.property.paymentsbillingservice.utils.InvoiceFrequency;
 import com.service.property.paymentsbillingservice.utils.InvoiceStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,5 +32,9 @@ public class Invoice {
 
     @Column(name = "tenant_id", nullable = false)
     private Long tenantId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private InvoiceFrequency frequency;
 
 }

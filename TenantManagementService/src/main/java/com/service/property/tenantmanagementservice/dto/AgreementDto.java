@@ -1,5 +1,6 @@
 package com.service.property.tenantmanagementservice.dto;
 
+import com.service.property.tenantmanagementservice.enums.PaymentFrequency;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,4 +13,6 @@ public class AgreementDto {
     private LocalDate endDate;
 
     private Long unitId;
+
+    private PaymentFrequency paymentFrequency;
 }

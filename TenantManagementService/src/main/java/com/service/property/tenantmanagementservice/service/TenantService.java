@@ -32,4 +32,8 @@ public class TenantService {
         tenant.setEmergencyContactPhoneNumber(tenantDto.getEmergencyContactPhoneNumber());
         return tenantRepository.save(tenant);
     }
+
+    public Tenant getTenantById(Long id) {
+        return tenantRepository.findById(id).get();
+    }
 }

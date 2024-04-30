@@ -2,6 +2,7 @@ package com.service.property.tenantmanagementservice.service;
 
 import com.service.property.tenantmanagementservice.dto.AgreementDto;
 import com.service.property.tenantmanagementservice.dto.UnitDto;
+import com.service.property.tenantmanagementservice.enums.PaymentFrequency;
 import com.service.property.tenantmanagementservice.enums.UnitStatus;
 import com.service.property.tenantmanagementservice.exceptions.UnitNotFoundException;
 import com.service.property.tenantmanagementservice.exceptions.UnitOccupiedException;
@@ -13,6 +14,8 @@ import com.service.property.tenantmanagementservice.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -58,12 +61,23 @@ public class AgreementService {
 
             System.out.println("Unit Number is: " + rentedUnit.getUnitNumber());
 
+            Date now = new Date();
+
             Agreement agreement = new Agreement();
             agreement.setTenant(tenant);
             agreement.setStartDate(agreementDto.getStartDate());
             agreement.setEndDate(agreementDto.getEndDate());
+            agreement.setCreatedDate(now);
+
+            if (agreementDto.getPaymentFrequency() != null){
+                agreement.setPaymentFrequency(agreementDto.getPaymentFrequency());
+            }
 
             double totalRent = rentedUnit.getRentPerSqFt() * rentedUnit.getSquareFt();
+
+            double rentDepositAmount = totalRent * 3;
+
+            agreement.setSecurityDeposit(BigDecimal.valueOf(rentDepositAmount));
 
             agreement.setRentAmount(totalRent);
             //we also need unit... its available from the property service
@@ -72,8 +86,9 @@ public class AgreementService {
             agreementRepository.save(agreement);
             return agreement;
 
-        } catch (NoSuchElementException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error while creating agreement: " + e.getMessage());
             throw new UnitNotFoundException("Unit not found");
         }
     }
