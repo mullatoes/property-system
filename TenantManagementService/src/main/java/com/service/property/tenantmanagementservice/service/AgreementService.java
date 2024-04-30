@@ -92,4 +92,15 @@ public class AgreementService {
             throw new UnitNotFoundException("Unit not found");
         }
     }
+
+    public Agreement getAgreement(Long tenantId) {
+
+        List<Agreement> agreements = agreementRepository.findAgreementByTenantId(tenantId);
+
+        if (!agreements.isEmpty()) {
+            return agreements.get(0);
+        }
+
+        return null;
+    }
 }

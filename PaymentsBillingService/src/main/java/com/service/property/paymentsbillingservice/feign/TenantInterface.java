@@ -1,5 +1,6 @@
 package com.service.property.paymentsbillingservice.feign;
 
+import com.service.property.paymentsbillingservice.dto.Agreement;
 import com.service.property.paymentsbillingservice.dto.Tenant;
 import com.service.property.paymentsbillingservice.utils.ResponseWrapper;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,5 +13,8 @@ public interface TenantInterface {
 
     @GetMapping("/api/tenant/{id}")
     ResponseEntity<ResponseWrapper<Tenant>> getTenantById(@PathVariable Long id);
+
+    @GetMapping("/api/agreement/{tenantId}")
+    ResponseEntity<ResponseWrapper<Agreement>> getAgreement(@PathVariable Long tenantId);
 
 }

@@ -34,4 +34,13 @@ public class AgreementController {
         return ResponseEntity.ok(new ResponseWrapper<>("success",
                 "Agreement created successfully", 1, agreement));
     }
+
+    @GetMapping("/{tenantId}")
+    public ResponseEntity<ResponseWrapper<Agreement>> getAgreement(@PathVariable Long tenantId) {
+        Agreement agreement = agreementService.getAgreement(tenantId);
+
+        return ResponseEntity.ok(
+                new ResponseWrapper<>("success", "Agreement retrieved successful", 1, agreement)
+        );
+    }
 }

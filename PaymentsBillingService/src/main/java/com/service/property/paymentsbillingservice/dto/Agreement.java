@@ -1,0 +1,37 @@
+package com.service.property.paymentsbillingservice.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.service.property.paymentsbillingservice.utils.enums.AgreementStatus;
+import com.service.property.paymentsbillingservice.utils.enums.PaymentFrequency;
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
+
+
+@Data
+public class Agreement {
+
+    private Long id;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private double rentAmount;
+
+    private Tenant tenant;
+
+    private Long rentedUnitId;
+
+    private PaymentFrequency paymentFrequency;
+
+    private BigDecimal securityDeposit;
+
+    private Date createdDate;
+
+    private AgreementStatus status;
+
+}

@@ -2,6 +2,7 @@ package com.service.property.paymentsbillingservice.model;
 
 import com.service.property.paymentsbillingservice.utils.InvoiceFrequency;
 import com.service.property.paymentsbillingservice.utils.InvoiceStatus;
+import com.service.property.paymentsbillingservice.utils.enums.PaymentFrequency;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -35,6 +36,6 @@ public class Invoice {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private InvoiceFrequency frequency;
+    private PaymentFrequency frequency;
 
 }
