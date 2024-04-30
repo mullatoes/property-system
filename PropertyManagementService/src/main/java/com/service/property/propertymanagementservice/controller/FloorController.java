@@ -42,7 +42,7 @@ public class FloorController {
 
         if (floor == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new UnSuccessfulWrapper("failure", "Failed to create floor"));
+                    .body(new UnSuccessfulWrapper("failure", "Failed to create floor. Maximum number of floors reached"));
         }
         return ResponseEntity.ok(new ResponseWrapper<>("success",
                 "Floor created successful", 1, floor));
@@ -61,7 +61,7 @@ public class FloorController {
         }
 
         return ResponseEntity.ok(new ResponseWrapper<>("success",
-                "All floors retrieved successfully", allUnitsByFloorId.size(), allUnitsByFloorId));
+                "All units retrieved successfully", allUnitsByFloorId.size(), allUnitsByFloorId));
 
     }
 }
