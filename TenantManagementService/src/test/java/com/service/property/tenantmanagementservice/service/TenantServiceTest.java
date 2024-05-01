@@ -81,7 +81,7 @@ class TenantServiceTest {
         verify(tenantRepository).save(isA(Tenant.class));
         assertSame(tenant, actualAddTenantResult);
     }
-    
+
     @Test
     void testGetTenantById() {
         // Arrange
