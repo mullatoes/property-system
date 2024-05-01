@@ -61,7 +61,7 @@ class InvoiceServiceTest {
         assertTrue(actualInvoices.isEmpty());
         assertSame(invoiceList, actualInvoices);
     }
-    
+
     @Test
     void testCreateInvoice() {
         // Arrange
