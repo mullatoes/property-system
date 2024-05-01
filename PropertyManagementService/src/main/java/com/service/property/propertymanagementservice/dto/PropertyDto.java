@@ -1,6 +1,5 @@
 package com.service.property.propertymanagementservice.dto;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data

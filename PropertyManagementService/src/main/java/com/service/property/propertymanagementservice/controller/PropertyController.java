@@ -35,9 +35,9 @@ public class PropertyController {
                 propertyDto.getName() + " added successfully",1, property));
     }
 
-    @PutMapping
-    public ResponseEntity<ResponseWrapper<Property>> updateProperty(@RequestBody PropertyDto propertyDto) {
-        Property property = propertyService.updateProperty(propertyDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseWrapper<Property>> updateProperty(@PathVariable Long id, @RequestBody PropertyDto propertyDto) {
+        Property property = propertyService.updateProperty(id,propertyDto);
 
         return ResponseEntity.ok(new ResponseWrapper<>("success",
                 propertyDto.getName() + " updated successfully", property));
@@ -48,5 +48,13 @@ public class PropertyController {
         propertyService.deleteById(id);
         return ResponseEntity.ok(new ResponseWrapper<>("success",
                 "Property deleted successfully"));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseWrapper<Property>> getPropertyById(@PathVariable Long id) {
+        Property property = propertyService.getPropertyById(id);
+
+        return ResponseEntity.ok(new ResponseWrapper<>("success",
+                "Property " + property.getName() + " retrieved successfully", 1, property));
     }
 }

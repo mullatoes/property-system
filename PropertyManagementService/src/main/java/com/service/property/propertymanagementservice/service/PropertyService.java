@@ -39,8 +39,9 @@ public class PropertyService {
         return propertyRepository.save(property);
     }
 
-    public Property updateProperty(PropertyDto propertyDto) {
-        Property property = new Property();
+    public Property updateProperty(Long id, PropertyDto propertyDto) {
+        Property property = propertyRepository.findById(id).get();
+
         property.setName(propertyDto.getName());
         property.setDescription(propertyDto.getDescription());
         property.setAddress(propertyDto.getAddress());
@@ -66,5 +67,9 @@ public class PropertyService {
         }
 
         propertyRepository.deleteById(id);
+    }
+
+    public Property getPropertyById(Long id) {
+        return propertyRepository.findById(id).get();
     }
 }
