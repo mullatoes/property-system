@@ -54,4 +54,8 @@ public class FloorService {
     public List<Floor> getAllFloorsForProperty(Long propertyId) {
         return floorRepository.findFloorsByPropertyId(propertyId);
     }
+
+    public List<Unit> getUnitsByFloorId(Long floorId) {
+        return unitRepository.getUnitsByFloorId(floorId);
+    }
 }

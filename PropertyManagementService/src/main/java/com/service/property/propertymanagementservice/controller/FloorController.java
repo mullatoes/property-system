@@ -77,4 +77,18 @@ public class FloorController {
         return ResponseEntity.ok(new ResponseWrapper<>("success",
                 "All floors retrieved successfully", allFloorsForProperty.size(), allFloorsForProperty));
     }
+
+    @GetMapping("/getUnitsByFloorId/{floorId}")
+    public ResponseEntity<ResponseWrapper<List<Unit>>> getUnitsByFloorId(@PathVariable Long floorId){
+        List<Unit> allUnitsByFloorId = floorService.getUnitsByFloorId(floorId);
+
+        if (allUnitsByFloorId.isEmpty()) {
+            ResponseEntity.ok(new ResponseWrapper<>("success",
+                    "No units found for this floor", 0, allUnitsByFloorId));
+        }
+
+        return ResponseEntity.ok(new ResponseWrapper<>("success",
+                "All units for retrieved successfully", allUnitsByFloorId.size(), allUnitsByFloorId));
+    }
+
 }
