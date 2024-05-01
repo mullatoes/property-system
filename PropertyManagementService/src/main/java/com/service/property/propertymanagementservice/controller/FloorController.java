@@ -64,4 +64,17 @@ public class FloorController {
                 "All units retrieved successfully", allUnitsByFloorId.size(), allUnitsByFloorId));
 
     }
+
+    @GetMapping("/getAllFloorsForProperty/{propertyId}")
+    public ResponseEntity<ResponseWrapper<List<Floor>>> getAllFloorsForProperty(@PathVariable Long propertyId){
+        List<Floor> allFloorsForProperty = floorService.getAllFloorsForProperty(propertyId);
+
+        if (allFloorsForProperty.isEmpty()) {
+            ResponseEntity.ok(new ResponseWrapper<>("success",
+                    "No Floors found for this property", 0, allFloorsForProperty));
+        }
+
+        return ResponseEntity.ok(new ResponseWrapper<>("success",
+                "All floors retrieved successfully", allFloorsForProperty.size(), allFloorsForProperty));
+    }
 }
