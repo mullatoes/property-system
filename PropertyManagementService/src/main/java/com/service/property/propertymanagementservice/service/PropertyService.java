@@ -10,6 +10,7 @@ import com.service.property.propertymanagementservice.repository.UnitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PropertyService {
@@ -51,6 +52,19 @@ public class PropertyService {
     }
 
     public void deleteById(Long id) {
+
+       /* Property property = propertyRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Property not found with id: " + id));
+
+        boolean hasOccupiedUnit = property.getFloors().stream()
+                .flatMap(floor -> unitRepository.getUnitsByFloorId(floor.getId()).stream())
+                .anyMatch(unit -> unit.getUnitStatus().equals(UnitStatus.OCCUPIED));
+
+        if (hasOccupiedUnit) {
+            System.out.println("You can't delete this property. It has an occupied unit.");
+            throw new RuntimeException("You can't delete this property. It has an occupied unit.");
+        }*/
+
         Property property = propertyRepository.findById(id).get();
         Long propertyId = property.getId();
         List<Floor> floors = floorRepository.findAll();
