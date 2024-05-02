@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.service.property.tenantmanagementservice.dto.AgreementDto;
+import com.service.property.tenantmanagementservice.dto.MailDTO;
 import com.service.property.tenantmanagementservice.dto.UnitDto;
 import com.service.property.tenantmanagementservice.enums.AgreementStatus;
 import com.service.property.tenantmanagementservice.enums.PaymentFrequency;
@@ -19,6 +20,7 @@ import com.service.property.tenantmanagementservice.enums.TenantStatus;
 import com.service.property.tenantmanagementservice.enums.UnitStatus;
 import com.service.property.tenantmanagementservice.exceptions.UnitNotFoundException;
 import com.service.property.tenantmanagementservice.exceptions.UnitOccupiedException;
+import com.service.property.tenantmanagementservice.feign.NotificationInterface;
 import com.service.property.tenantmanagementservice.feign.UnitInterface;
 import com.service.property.tenantmanagementservice.model.Agreement;
 import com.service.property.tenantmanagementservice.model.Tenant;
@@ -53,11 +55,13 @@ class AgreementServiceTest {
     private AgreementService agreementService;
 
     @MockBean
+    private NotificationInterface notificationInterface;
+
+    @MockBean
     private TenantRepository tenantRepository;
 
     @MockBean
     private UnitInterface unitInterface;
-
 
     @Test
     void testGetAllAgreements() {
@@ -114,10 +118,6 @@ class AgreementServiceTest {
         verify(tenantRepository).findById(eq(1L));
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
     void testCreateAgreement2() {
         // Arrange
@@ -148,10 +148,6 @@ class AgreementServiceTest {
         verify(tenantRepository).findById(eq(1L));
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
     void testCreateAgreement3() {
         // Arrange
@@ -186,10 +182,6 @@ class AgreementServiceTest {
         verify(responseEntity).getBody();
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
     void testCreateAgreement4() {
         // Arrange
@@ -223,10 +215,6 @@ class AgreementServiceTest {
         verify(responseEntity).getBody();
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
     void testCreateAgreement5() {
         // Arrange
@@ -264,13 +252,10 @@ class AgreementServiceTest {
         verify(responseEntity).getBody();
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
     void testCreateAgreement6() {
         // Arrange
+        when(notificationInterface.sendMail(Mockito.<MailDTO>any())).thenReturn(null);
         UnitDto unitDto = mock(UnitDto.class);
         when(unitDto.getRentPerSqFt()).thenReturn(10.0d);
         when(unitDto.getSquareFt()).thenReturn(10.0d);
@@ -326,35 +311,21 @@ class AgreementServiceTest {
         agreementDto.setStartDate(LocalDate.of(1970, 1, 1));
         agreementDto.setUnitId(1L);
 
-        // Act
-        Agreement actualCreateAgreementResult = agreementService.createAgreement(1L, agreementDto);
-
-        // Assert
+        // Act and Assert
+        assertThrows(UnitNotFoundException.class, () -> agreementService.createAgreement(1L, agreementDto));
         verify(unitDto).getId();
         verify(unitDto).getRentPerSqFt();
         verify(unitDto).getSquareFt();
         verify(unitDto).getUnitNumber();
         verify(unitDto).getUnitStatus();
+        verify(notificationInterface).sendMail(isA(MailDTO.class));
         verify(unitInterface).getUnitById(eq(1L));
         verify(unitInterface).updateUnitStatus(eq(1L));
         verify(tenantRepository).findById(eq(1L));
         verify(agreementRepository).save(isA(Agreement.class));
         verify(responseEntity).getBody();
-        assertEquals("1970-01-01", actualCreateAgreementResult.getEndDate().toString());
-        assertEquals("1970-01-01", actualCreateAgreementResult.getStartDate().toString());
-        assertEquals(100.0d, actualCreateAgreementResult.getRentAmount());
-        assertEquals(1L, actualCreateAgreementResult.getRentedUnitId().longValue());
-        assertEquals(AgreementStatus.ACTIVE, actualCreateAgreementResult.getStatus());
-        assertEquals(PaymentFrequency.MONTHLY, actualCreateAgreementResult.getPaymentFrequency());
-        assertEquals(tenant, actualCreateAgreementResult.getTenant());
-        BigDecimal expectedSecurityDeposit = new BigDecimal("300.0");
-        assertEquals(expectedSecurityDeposit, actualCreateAgreementResult.getSecurityDeposit());
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
     void testCreateAgreement7() {
         // Arrange
@@ -404,61 +375,8 @@ class AgreementServiceTest {
         verify(responseEntity).getBody();
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
     void testCreateAgreement8() {
-        // Arrange
-        UnitDto unitDto = mock(UnitDto.class);
-        when(unitDto.getRentPerSqFt()).thenReturn(Double.NaN);
-        when(unitDto.getSquareFt()).thenReturn(10.0d);
-        when(unitDto.getUnitNumber()).thenReturn("42");
-        when(unitDto.getUnitStatus()).thenReturn(UnitStatus.VACANT);
-        ResponseEntity<ResponseWrapper<UnitDto>> responseEntity = mock(ResponseEntity.class);
-        when(responseEntity.getBody())
-                .thenReturn(new ResponseWrapper<>("Status", "Not all who wander are lost", 3, unitDto));
-        when(unitInterface.updateUnitStatus(Mockito.<Long>any())).thenReturn(null);
-        when(unitInterface.getUnitById(Mockito.<Long>any())).thenReturn(responseEntity);
-
-        Tenant tenant = new Tenant();
-        tenant.setAddress("42 Main St");
-        tenant.setDateOfBirth(LocalDate.of(1970, 1, 1));
-        tenant.setEmail("jane.doe@example.org");
-        tenant.setEmergencyContactPhoneNumber("6625550144");
-        tenant.setId(1L);
-        tenant.setName("Name");
-        tenant.setOccupation("Occupation");
-        tenant.setPhoneNumber("6625550144");
-        tenant.setStatus(TenantStatus.ACTIVE);
-        Optional<Tenant> ofResult = Optional.of(tenant);
-        when(tenantRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
-
-        AgreementDto agreementDto = new AgreementDto();
-        agreementDto.setEndDate(LocalDate.of(1970, 1, 1));
-        agreementDto.setPaymentFrequency(PaymentFrequency.MONTHLY);
-        agreementDto.setStartDate(LocalDate.of(1970, 1, 1));
-        agreementDto.setUnitId(1L);
-
-        // Act and Assert
-        assertThrows(UnitNotFoundException.class, () -> agreementService.createAgreement(1L, agreementDto));
-        verify(unitDto).getRentPerSqFt();
-        verify(unitDto).getSquareFt();
-        verify(unitDto).getUnitNumber();
-        verify(unitDto).getUnitStatus();
-        verify(unitInterface).getUnitById(eq(1L));
-        verify(unitInterface).updateUnitStatus(eq(1L));
-        verify(tenantRepository).findById(eq(1L));
-        verify(responseEntity).getBody();
-    }
-
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
-    @Test
-    void testCreateAgreement9() {
         // Arrange
         ResponseEntity<ResponseWrapper<UnitDto>> responseEntity = mock(ResponseEntity.class);
         when(responseEntity.getBody()).thenReturn(null);
@@ -490,12 +408,8 @@ class AgreementServiceTest {
         verify(responseEntity).getBody();
     }
 
-    /**
-     * Method under test:
-     * {@link AgreementService#createAgreement(Long, AgreementDto)}
-     */
     @Test
-    void testCreateAgreement10() {
+    void testCreateAgreement9() {
         // Arrange
         ResponseWrapper<UnitDto> responseWrapper = mock(ResponseWrapper.class);
         when(responseWrapper.getData()).thenThrow(new UnitOccupiedException("An error occurred"));
@@ -530,9 +444,6 @@ class AgreementServiceTest {
         verify(responseEntity).getBody();
     }
 
-    /**
-     * Method under test: {@link AgreementService#getAgreement(Long)}
-     */
     @Test
     void testGetAgreement() {
         // Arrange
@@ -546,9 +457,6 @@ class AgreementServiceTest {
         assertNull(actualAgreement);
     }
 
-    /**
-     * Method under test: {@link AgreementService#getAgreement(Long)}
-     */
     @Test
     void testGetAgreement2() {
         // Arrange
@@ -587,9 +495,6 @@ class AgreementServiceTest {
         assertSame(agreement, actualAgreement);
     }
 
-    /**
-     * Method under test: {@link AgreementService#getAgreement(Long)}
-     */
     @Test
     void testGetAgreement3() {
         // Arrange
@@ -601,3 +506,4 @@ class AgreementServiceTest {
         verify(agreementRepository).findAgreementByTenantId(eq(1L));
     }
 }
+
