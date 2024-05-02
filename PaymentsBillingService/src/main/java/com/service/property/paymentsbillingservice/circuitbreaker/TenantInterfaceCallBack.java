@@ -10,11 +10,14 @@ import org.springframework.http.ResponseEntity;
 public class TenantInterfaceCallBack implements TenantInterface {
     @Override
     public ResponseEntity<ResponseWrapper<Tenant>> getTenantById(Long id) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ResponseWrapper<>("failure",
+                "Failure... unable to reach the service"));
+
     }
 
     @Override
     public ResponseEntity<ResponseWrapper<Agreement>> getAgreement(Long tenantId) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ResponseWrapper<>("failure",
+                "Failure... unable to reach the service"));
     }
 }

@@ -7,3 +7,9 @@ TENANTMANAGEMENTSERVICE:
     MaxAutoRetries: 1
     MaxAutoRetriesNextServer: 1
     OkToRetryOnAllOperations: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: health,info

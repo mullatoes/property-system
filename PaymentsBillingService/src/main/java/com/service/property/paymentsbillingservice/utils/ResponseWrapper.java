@@ -18,4 +18,11 @@ public class ResponseWrapper<T> {
         this.data = data;
     }
 
+    public ResponseWrapper(String status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
+
+
 }
