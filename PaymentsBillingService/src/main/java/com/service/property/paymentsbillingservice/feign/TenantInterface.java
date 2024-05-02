@@ -1,14 +1,16 @@
 package com.service.property.paymentsbillingservice.feign;
 
+import com.service.property.paymentsbillingservice.circuitbreaker.TenantInterfaceCallBack;
 import com.service.property.paymentsbillingservice.dto.Agreement;
 import com.service.property.paymentsbillingservice.dto.Tenant;
+import com.service.property.paymentsbillingservice.ratelimiter.TenantManagementServiceConfiguration;
 import com.service.property.paymentsbillingservice.utils.ResponseWrapper;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient("TENANTMANAGEMENTSERVICE")
+@FeignClient(value = "TENANTMANAGEMENTSERVICE", fallback = TenantInterfaceCallBack.class, configuration = TenantManagementServiceConfiguration.class)
 public interface TenantInterface {
 
     @GetMapping("/api/tenant/{id}")

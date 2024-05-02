@@ -1,0 +1,9 @@
+ribbon:
+  eureka:
+    enabled: false
+TENANTMANAGEMENTSERVICE:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 1
+    OkToRetryOnAllOperations: true
