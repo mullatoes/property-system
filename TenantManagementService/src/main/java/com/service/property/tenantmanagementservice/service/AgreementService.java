@@ -92,7 +92,11 @@ public class AgreementService {
             agreement.setRentedUnitId(rentedUnit.getId());
 
             agreementRepository.save(agreement);
-            sendTenancyAgreementEmail(tenant, agreement);
+
+            if (tenant.getEmail() != null) {
+                sendTenancyAgreementEmail(tenant, agreement);
+            }
+
             return agreement;
 
         } catch (Exception e) {
@@ -133,14 +137,14 @@ public class AgreementService {
     private void sendTenancyAgreementEmail(Tenant tenant, Agreement agreement) {
         MailDTO mailDTO = new MailDTO();
 
-        String mailContent = "Dear " + tenant.getName() +
-                "We trust this email finds you well. Attached, you will find your tenancy agreement for the rented property." +
+        String mailContent = "Dear " + tenant.getName() + ",\n" +
+                "We trust this email finds you well. Below are agreement details for the rented unit(s), you will find your tenancy agreement for the rented property." +
                 "Agreement Details are follows: " +
-                "Start Date: " + agreement.getStartDate() + "\n" +
-                "End Date: " + agreement.getEndDate() + "\n" +
-                "Payment Frequency: " + agreement.getPaymentFrequency()+ "\n" +
-                "Security Deposit: " + agreement.getSecurityDeposit() + "\n" +
-                "Rent Amount: " + agreement.getRentAmount();
+                "1. Start Date: " + agreement.getStartDate() + "\n" +
+                "2. End Date: " + agreement.getEndDate() + "\n" +
+                "3. Payment Frequency: " + agreement.getPaymentFrequency()+ "\n" +
+                "4. Security Deposit: " + agreement.getSecurityDeposit() + "\n" +
+                "5. Rent Amount: " + agreement.getRentAmount();
 
         mailDTO.setTo(tenant.getEmail());
         mailDTO.setContent(mailContent);
