@@ -2,7 +2,7 @@
 FROM maven:3.8.4-openjdk-17 AS builder
 
 # Set the working directory in the container
-WORKDIR /PropertyManagementService
+WORKDIR /NotificationService
 
 # Copy the Maven project files
 COPY pom.xml .
@@ -20,13 +20,13 @@ RUN mvn package -DskipTests
 FROM openjdk:17-jdk-alpine
 
 # Set the working directory in the container
-WORKDIR /PropertyManagementService
+WORKDIR /NotificationService
 
 # Copy the built .war file from the builder stage
-COPY --from=builder /PropertyManagementService/target/*.jar /PropertyManagementService/NotificationService.jar
+COPY --from=builder /NotificationService/target/*.jar /NotificationService/NotificationService.jar
 
 # Expose the port your application runs on
 #EXPOSE 8189
 
 # Command to run the application
-CMD ["java", "-jar", "PropertyManagementService.jar"]
+CMD ["java", "-jar", "NotificationService.jar"]
