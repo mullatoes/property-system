@@ -92,7 +92,7 @@ public class InvoiceService {
 
     }
 
-    public Invoice createInvoiceFromUnit(Long unitId, Month month, int year, InvoiceDTO invoiceDTO) {
+    public Invoice createInvoiceFromUnit(Long unitId, Month month, int year) {
 
         //we need to call tenants service
         Unit unit = Objects.requireNonNull(propertyInterface.getUnitById(unitId).getBody()).getData();
@@ -122,18 +122,19 @@ public class InvoiceService {
 //        validateCreateInvoiceDTO(invoiceDTO);
 
         Invoice invoice = new Invoice();
-        invoice.setInvoiceDate(invoiceDTO.getDateInvoiced());
-        invoice.setMonth(invoiceDTO.getMonth());
-        invoice.setYear(invoiceDTO.getYear());
+
+        invoice.setMonth(month);
+        invoice.setYear(year);
         invoice.setTotalAmount(BigDecimal.valueOf(agreement.getRentAmount()));
         invoice.setStatus(InvoiceStatus.PENDING);
-        invoice.setTenantId(invoiceDTO.getTenantId());
+        invoice.setTenantId(Long.valueOf(15));
         invoice.setFrequency(agreement.getPaymentFrequency());
+        invoice.setBalance(BigDecimal.valueOf(0));
         return invoiceRepository.save(invoice);
 
     }
 
-    public Invoice createInvoiceFromProperty(Long propertyId, Month month, int year, InvoiceDTO invoiceDTO) {
+    public Invoice createInvoiceFromProperty(Long propertyId, Month month, int year) {
 
         //we need to call tenants service
         Property property = Objects.requireNonNull(propertyInterface.getPropertyById(propertyId).getBody()).getData();
@@ -143,7 +144,7 @@ public class InvoiceService {
         }
         List<Unit> unitList = Objects.requireNonNull(propertyInterface.getUnitsByPropertyId(propertyId).getBody()).getData();
         for (Unit u : unitList) {
-            Invoice invoice = createInvoiceFromUnit(u.getId(), month, year, invoiceDTO);
+            Invoice invoice = createInvoiceFromUnit(u.getId(),month,year);
             return invoice;
 
         }
@@ -182,4 +183,6 @@ public class InvoiceService {
         Optional<Invoice> invoiceOptional = invoiceRepository.findByTenantIdAndMonthAndYear(tenantId, month, year);
         return invoiceOptional.isPresent();
     }
+
+
 }

@@ -55,7 +55,7 @@ public class InvoiceController {
     @PostMapping("/{unitId}")
     public ResponseEntity<Object> createInvoiceFromUnit(@PathVariable Long unitId, @PathVariable Month month, @PathVariable int year,
                                                       @RequestBody InvoiceDTO invoiceDTO) {
-        Invoice invoice = invoiceService.createInvoiceFromUnit(unitId, month, year,invoiceDTO);
+        Invoice invoice = invoiceService.createInvoiceFromUnit(unitId, month, year);
         if (invoice == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new UnSuccessfulWrapper("failure",
@@ -70,7 +70,7 @@ public class InvoiceController {
     @PostMapping("/{propertyId}")
     public ResponseEntity<Object> createInvoiceFromProperty(@PathVariable Long propertyId, @PathVariable Month month, @PathVariable int year,
                                                         @RequestBody InvoiceDTO invoiceDTO) {
-        Invoice invoice = invoiceService.createInvoiceFromProperty(propertyId, month, year,invoiceDTO);
+        Invoice invoice = invoiceService.createInvoiceFromProperty(propertyId, month, year);
         if (invoice == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new UnSuccessfulWrapper("failure",
