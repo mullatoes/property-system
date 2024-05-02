@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://127.0.0.1:5433/authservice
+    hikari:
+      connectionTimeout: '20000'
+      maximumPoolSize: '5'
+    password: Admin@123
+  application:
+    name: AuthService
+  jpa:
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+server:
+  port: '2029'
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

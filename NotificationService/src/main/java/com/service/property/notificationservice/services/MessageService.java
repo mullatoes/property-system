@@ -1,7 +1,10 @@
 package com.service.property.notificationservice.services;
 
+import com.service.property.notificationservice.model.Message;
 import com.service.property.notificationservice.repository.MessageRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MessageService {
@@ -12,4 +15,7 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
+    public List<Message> getMessages() {
+        return messageRepository.findAll();
+    }
 }
