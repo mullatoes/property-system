@@ -39,7 +39,7 @@ public class InvoiceController {
 
     @PostMapping("/{tenancyAgreementId}")
     public ResponseEntity<Object> createInvoice(@PathVariable Long tenancyAgreementId, @RequestBody YearMonthDto yearMonthDto) {
-        Invoice invoice = invoiceService.createInvoice(tenancyAgreementId, yearMonthDto.getMonth(), yearMonthDto.getYear());
+        Invoice invoice = invoiceService.createInvoice(tenancyAgreementId, Month.valueOf(yearMonthDto.getMonth()), yearMonthDto.getYear());
         if (invoice == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new UnSuccessfulWrapper("failure",
