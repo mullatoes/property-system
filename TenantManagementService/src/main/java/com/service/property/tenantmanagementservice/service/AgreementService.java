@@ -1,11 +1,13 @@
 package com.service.property.tenantmanagementservice.service;
 
 import com.service.property.tenantmanagementservice.dto.AgreementDto;
+import com.service.property.tenantmanagementservice.dto.MailDTO;
 import com.service.property.tenantmanagementservice.dto.UnitDto;
 import com.service.property.tenantmanagementservice.enums.PaymentFrequency;
 import com.service.property.tenantmanagementservice.enums.UnitStatus;
 import com.service.property.tenantmanagementservice.exceptions.UnitNotFoundException;
 import com.service.property.tenantmanagementservice.exceptions.UnitOccupiedException;
+import com.service.property.tenantmanagementservice.feign.NotificationInterface;
 import com.service.property.tenantmanagementservice.feign.UnitInterface;
 import com.service.property.tenantmanagementservice.model.Agreement;
 import com.service.property.tenantmanagementservice.model.Tenant;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+import jdk.jfr.Frequency;
+
 @Service
 public class AgreementService {
 
@@ -28,6 +32,9 @@ public class AgreementService {
 
     @Autowired
     UnitInterface unitInterface;
+
+    @Autowired
+    NotificationInterface notificationInterface;
 
     public AgreementService(AgreementRepository agreementRepository, TenantRepository tenantRepository) {
         this.agreementRepository = agreementRepository;
@@ -84,6 +91,7 @@ public class AgreementService {
             agreement.setRentedUnitId(rentedUnit.getId());
 
             agreementRepository.save(agreement);
+            sendTenancyAgreementEmail(tenant, agreement);
             return agreement;
 
         } catch (Exception e) {
@@ -102,5 +110,24 @@ public class AgreementService {
         }
 
         return null;
+    }
+
+    private void sendTenancyAgreementEmail(Tenant tenant, Agreement agreement) {
+        MailDTO mailDTO = new MailDTO();
+
+        String mailContent = "Dear " + tenant.getName() +
+                "We trust this email finds you well. Attached, you will find your tenancy agreement for the rented property." +
+                "Agreement Details are follows: " +
+                "Start Date: " + agreement.getStartDate() + "\n" +
+                "End Date: " + agreement.getEndDate() + "\n" +
+                "Payment Frequency: " + agreement.getPaymentFrequency()+ "\n" +
+                "Security Deposit: " + agreement.getSecurityDeposit() + "\n" +
+                "Rent Amount: " + agreement.getRentAmount();
+
+        mailDTO.setTo(tenant.getEmail());
+        mailDTO.setContent(mailContent);
+
+        Object mailSendObject = Objects.requireNonNull(notificationInterface.sendMail(mailDTO).getBody());
+
     }
 }
