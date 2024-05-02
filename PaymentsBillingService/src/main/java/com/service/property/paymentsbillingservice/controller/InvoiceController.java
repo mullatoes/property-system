@@ -34,6 +34,7 @@ public class InvoiceController {
 
         return ResponseEntity.ok(new ResponseWrapper<>("success",
                 "All invoices retrieved successfully", invoices.size(), invoices));
+        
 
     }
 
