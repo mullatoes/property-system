@@ -20,4 +20,14 @@ public class TenantInterfaceCallBack implements TenantInterface {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ResponseWrapper<>("failure",
                 "Failure... unable to reach the service"));
     }
+
+    @Override
+    public ResponseEntity<ResponseWrapper<Agreement>> getAgreementWithUnitId(Long unitId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<ResponseWrapper<Agreement>> getAgreementById(Long id) {
+        return null;
+    }
 }

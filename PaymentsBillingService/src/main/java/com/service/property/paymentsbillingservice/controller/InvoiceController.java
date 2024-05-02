@@ -1,6 +1,7 @@
 package com.service.property.paymentsbillingservice.controller;
 
 import com.service.property.paymentsbillingservice.dto.InvoiceDTO;
+import com.service.property.paymentsbillingservice.dto.YearMonthDto;
 import com.service.property.paymentsbillingservice.model.Invoice;
 import com.service.property.paymentsbillingservice.service.InvoiceService;
 import com.service.property.paymentsbillingservice.utils.ResponseWrapper;
@@ -36,9 +37,9 @@ public class InvoiceController {
 
     }
 
-    @PostMapping("/{tenancyAgreementId}/{month}/{year}")
-    public ResponseEntity<Object> createInvoice(@PathVariable Long tenancyAgreementId, @PathVariable Month month, @PathVariable int year) {
-        Invoice invoice = invoiceService.createInvoice(tenancyAgreementId, month, year);
+    @PostMapping("/{tenancyAgreementId}")
+    public ResponseEntity<Object> createInvoice(@PathVariable Long tenancyAgreementId, @RequestBody YearMonthDto yearMonthDto) {
+        Invoice invoice = invoiceService.createInvoice(tenancyAgreementId, yearMonthDto.getMonth(), yearMonthDto.getYear());
         if (invoice == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new UnSuccessfulWrapper("failure",
