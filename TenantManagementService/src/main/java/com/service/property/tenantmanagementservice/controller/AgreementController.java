@@ -43,4 +43,21 @@ public class AgreementController {
                 new ResponseWrapper<>("success", "Agreement retrieved successful", 1, agreement)
         );
     }
+    @GetMapping("/getAgreementById/{id}")
+    public ResponseEntity<ResponseWrapper<Agreement>> getAgreementById(@PathVariable Long id) {
+        Agreement agreement = agreementService.getAgreementById(id);
+
+        return ResponseEntity.ok(
+                new ResponseWrapper<>("success", "Agreement retrieved successful", 1, agreement)
+        );
+    }
+
+    @GetMapping("/getAgreement/{rentedUnitId}")
+    public ResponseEntity<ResponseWrapper<Agreement>> getAgreementWithUnitId(@PathVariable Long rentedUnitId) {
+        Agreement agreement = agreementService.getAgreementWithUnitId(rentedUnitId);
+
+        return ResponseEntity.ok(
+                new ResponseWrapper<>("success", "Agreement retrieved successful", 1, agreement)
+        );
+    }
 }

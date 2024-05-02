@@ -1,8 +1,8 @@
 spring:
   datasource:
     username: postgres
-    password: Admin@123
-    url: jdbc:postgresql://127.0.0.1:5433/notificationservice
+    password: birie
+    url: jdbc:postgresql://127.0.0.1:5432/notificationservice
     hikari:
       connectionTimeout: '20000'
       maximumPoolSize: '5'

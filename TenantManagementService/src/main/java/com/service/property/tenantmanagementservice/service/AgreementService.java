@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 
 import jdk.jfr.Frequency;
 
@@ -104,6 +105,23 @@ public class AgreementService {
     public Agreement getAgreement(Long tenantId) {
 
         List<Agreement> agreements = agreementRepository.findAgreementByTenantId(tenantId);
+
+        if (!agreements.isEmpty()) {
+            return agreements.get(0);
+        }
+
+        return null;
+    }
+
+    public Agreement getAgreementById(Long id) {
+
+  return agreementRepository.findById(id).get();
+
+     }
+
+    public Agreement getAgreementWithUnitId(Long rentedUnitId) {
+
+        List<Agreement> agreements = agreementRepository.findAgreementByRentedUnitId(rentedUnitId);
 
         if (!agreements.isEmpty()) {
             return agreements.get(0);

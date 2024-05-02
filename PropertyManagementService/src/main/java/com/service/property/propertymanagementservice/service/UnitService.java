@@ -30,6 +30,9 @@ public class UnitService {
     public List<Unit> getAllUnits() {
         return unitRepository.findAll();
     }
+    public List<Unit> getUnitsByPropertyId(Long propertyId) {
+        return unitRepository.getUnitsByPropertyId(propertyId);
+    }
 
     public Unit addUnit(Long floorId, UnitDto unitDto) {
 

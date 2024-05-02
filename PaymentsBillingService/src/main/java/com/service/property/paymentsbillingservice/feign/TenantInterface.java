@@ -16,5 +16,11 @@ public interface TenantInterface {
 
     @GetMapping("/api/agreement/{tenantId}")
     ResponseEntity<ResponseWrapper<Agreement>> getAgreement(@PathVariable Long tenantId);
+    @GetMapping("/api/agreement/getAgreement/{tenantId}")
+    ResponseEntity<ResponseWrapper<Agreement>> getAgreementWithUnitId(@PathVariable Long unitId);
+
+    @GetMapping("/api/agreement/getAgreementById/{id}")
+    ResponseEntity<ResponseWrapper<Agreement>> getAgreementById(@PathVariable Long id);
+
 
 }

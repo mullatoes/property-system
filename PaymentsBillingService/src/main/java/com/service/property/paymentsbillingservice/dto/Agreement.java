@@ -16,11 +16,8 @@ public class Agreement {
 
     private Long id;
 
-    private LocalDate startDate;
-
-    private LocalDate endDate;
-
     private double rentAmount;
+    private double balanceAmount;
 
     private Tenant tenant;
 
@@ -33,5 +30,8 @@ public class Agreement {
     private Date createdDate;
 
     private AgreementStatus status;
+
+    private Date startDate;
+
 
 }

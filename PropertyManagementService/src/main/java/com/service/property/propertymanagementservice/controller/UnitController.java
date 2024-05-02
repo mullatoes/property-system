@@ -63,4 +63,16 @@ public class UnitController {
         return ResponseEntity.ok(new ResponseWrapper<>("success",
                 unit.getUnitNumber() + " unit updated successful", 1, unit));
     }
+
+    @GetMapping("/getPropertyUnits/{unitId}")
+    public ResponseEntity<ResponseWrapper<List<Unit>>>  getUnitsByPropertyId(@PathVariable Long propertyId) {
+        System.out.println("Call getUnitsByPropertyId..... ");
+        List <Unit> allUnits = unitService.getUnitsByPropertyId(propertyId);
+        if (allUnits.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(new ResponseWrapper<>("success",
+                "All units retrieved successfully", allUnits.size(), allUnits));
+    }
 }

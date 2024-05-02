@@ -8,5 +8,6 @@ import java.util.List;
 public interface AgreementRepository extends JpaRepository<Agreement, Long> {
 
     List<Agreement> findAgreementByTenantId(Long tenantId);
+    List<Agreement> findAgreementByRentedUnitId(Long rentedUnitId);
 
 }

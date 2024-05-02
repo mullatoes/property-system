@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Month;
 import java.util.List;
 
 @RestController
@@ -35,9 +36,39 @@ public class InvoiceController {
 
     }
 
-    @PostMapping
-    public ResponseEntity<Object> createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
-        Invoice invoice = invoiceService.createInvoice(invoiceDTO);
+    @PostMapping("/{tenancyAgreementId}/{month}/{year}")
+    public ResponseEntity<Object> createInvoice(@PathVariable Long tenancyAgreementId, @PathVariable Month month, @PathVariable int year) {
+        Invoice invoice = invoiceService.createInvoice(tenancyAgreementId, month, year);
+        if (invoice == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new UnSuccessfulWrapper("failure",
+                            "Failure... unable to create an invoice"));
+        }
+
+        return ResponseEntity.ok(new ResponseWrapper<>("success",
+                "All invoices retrieved successfully", 1, invoice));
+
+    }
+
+    @PostMapping("/{unitId}")
+    public ResponseEntity<Object> createInvoiceFromUnit(@PathVariable Long unitId, @PathVariable Month month, @PathVariable int year,
+                                                      @RequestBody InvoiceDTO invoiceDTO) {
+        Invoice invoice = invoiceService.createInvoiceFromUnit(unitId, month, year,invoiceDTO);
+        if (invoice == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new UnSuccessfulWrapper("failure",
+                            "Failure... unable to create an invoice"));
+        }
+
+        return ResponseEntity.ok(new ResponseWrapper<>("success",
+                "All invoices retrieved successfully", 1, invoice));
+
+    }
+
+    @PostMapping("/{propertyId}")
+    public ResponseEntity<Object> createInvoiceFromProperty(@PathVariable Long propertyId, @PathVariable Month month, @PathVariable int year,
+                                                        @RequestBody InvoiceDTO invoiceDTO) {
+        Invoice invoice = invoiceService.createInvoiceFromProperty(propertyId, month, year,invoiceDTO);
         if (invoice == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     new UnSuccessfulWrapper("failure",

@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 
 @Data
 @Entity
@@ -18,11 +19,6 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
-
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
 
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
@@ -37,5 +33,18 @@ public class Invoice {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentFrequency frequency;
+
+    @Column(name = "month", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Month month;
+
+    @Column(name = "year", nullable = false)
+    private Integer year;
+
+    @Column(name = "balance", nullable = false)
+    private BigDecimal balance;
+
+    @Column(name = "invoice_date", nullable = false)
+    private LocalDate invoiceDate;
 
 }
