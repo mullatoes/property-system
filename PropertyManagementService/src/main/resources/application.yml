@@ -1,11 +1,11 @@
 spring:
   datasource:
     username: postgres
-    url: jdbc:postgresql://127.0.0.1:5432/propertymanagementservice
+    url: jdbc:postgresql://127.0.0.1:5433/propertymanagementservice
     hikari:
       connectionTimeout: '20000'
       maximumPoolSize: '5'
-    password: birie
+    password: Admin@123
   application:
     name: PropertyManagementService
   jpa:

@@ -47,18 +47,20 @@ public class InvoiceService {
     }
 
     public Invoice createInvoice(Long agreeementId, Month month, int year) {
-System.out.println("Kuja hapa");
+        System.out.println("Kuja hapa");
         Agreement agreement = tenantInterface.getAgreementById(agreeementId).getBody().getData();
 
+        System.out.println("Agreement Amount: " + agreement.getRentAmount());
+
         LocalDate firstDayOfMonth = LocalDate.of(year, month, 1);
-        if ( agreement == null || !agreement.getStatus().equals(AgreementStatus.ACTIVE)){
+        if (agreement == null || !agreement.getStatus().equals(AgreementStatus.ACTIVE)) {
             throw new IllegalArgumentException("The agreement is not active. Cannot proceed billing");
         }
 
         LocalDate agreementDate = agreement.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        System.out.println("Kuja hapa::::date is "+agreementDate);
-        if (firstDayOfMonth.isBefore(agreementDate)){
+        System.out.println("Kuja hapa::::date is " + agreementDate);
+        if (firstDayOfMonth.isBefore(agreementDate)) {
             throw new IllegalArgumentException("Error!! The period being invoiced is before contract was in force");
 
         }
@@ -85,6 +87,7 @@ System.out.println("Kuja hapa");
         invoice.setTenantId(Long.valueOf(15));
         invoice.setFrequency(agreement.getPaymentFrequency());
         invoice.setBalance(BigDecimal.valueOf(0));
+        System.out.println("About to save invoice: " + invoice.toString());
         return invoiceRepository.save(invoice);
 
     }
@@ -98,12 +101,12 @@ System.out.println("Kuja hapa");
             throw new IllegalArgumentException("Cannot find specified unit. Please contact administrator for help");
         }
 
-        if (unit.getUnitStatus().equals("VACANT")){
+        if (unit.getUnitStatus().equals("VACANT")) {
             throw new IllegalArgumentException("The find specified unit is vacant");
         }
 
         Agreement agreement = Objects.requireNonNull(tenantInterface.getAgreementWithUnitId(unitId).getBody()).getData();
-        if ( agreement == null || !agreement.getStatus().equals(AgreementStatus.ACTIVE)){
+        if (agreement == null || !agreement.getStatus().equals(AgreementStatus.ACTIVE)) {
             throw new IllegalArgumentException("The unit has not active tenant");
         }
 
@@ -111,7 +114,7 @@ System.out.println("Kuja hapa");
         //check if period is invoiced
         boolean invoiced = doesInvoiceExistForMonthAndYear(agreement.getTenant().getId(), month, year);
 
-        if (invoiced){
+        if (invoiced) {
             // the invoice exists
             throw new IllegalArgumentException("The period being invoiced has already been invoiced previously");
         }
@@ -138,14 +141,14 @@ System.out.println("Kuja hapa");
         if (property == null) {
             throw new IllegalArgumentException("Cannot find property");
         }
-        List <Unit> unitList = Objects.requireNonNull(propertyInterface.getUnitsByPropertyId(propertyId).getBody()).getData();
-        for (Unit u : unitList){
-            Invoice invoice = createInvoiceFromUnit(u.getId(),month,year,invoiceDTO);
+        List<Unit> unitList = Objects.requireNonNull(propertyInterface.getUnitsByPropertyId(propertyId).getBody()).getData();
+        for (Unit u : unitList) {
+            Invoice invoice = createInvoiceFromUnit(u.getId(), month, year, invoiceDTO);
             return invoice;
 
         }
 
-return null;
+        return null;
     }
 
 
@@ -165,7 +168,7 @@ return null;
     }
 
     private void validateCreateInvoiceDTO(Long tenantId, Month month, int year) {
-        if (tenantId == null ) {
+        if (tenantId == null) {
             throw new IllegalArgumentException("Invalid input parameters for creating invoice");
         }
     }

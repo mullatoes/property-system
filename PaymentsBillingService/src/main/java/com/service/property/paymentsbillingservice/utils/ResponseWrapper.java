@@ -11,6 +11,10 @@ public class ResponseWrapper<T> {
     private Integer itemCount;
     private T data;
 
+    public ResponseWrapper() {
+
+    }
+
     public ResponseWrapper(String status, String message, Integer itemCount, T data) {
         this.status = status;
         this.message = message;

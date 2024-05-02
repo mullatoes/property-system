@@ -6,6 +6,6 @@ import java.time.Month;
 
 @Data
 public class YearMonthDto {
-    private String month;
+    private Month month;
     private int year;
 }

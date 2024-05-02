@@ -20,31 +20,32 @@ public class Invoice {
     private Long id;
 
 
-    @Column(name = "total_amount", nullable = false)
+    @Column(name = "total_amount")
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private InvoiceStatus status;
 
-    @Column(name = "tenant_id", nullable = false)
+    @Column(name = "tenant_id")
     private Long tenantId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private PaymentFrequency frequency;
 
-    @Column(name = "month", nullable = false)
+    @Column(name = "month")
     @Enumerated(EnumType.STRING)
     private Month month;
 
-    @Column(name = "year", nullable = false)
+    @Column(name = "year")
     private Integer year;
 
-    @Column(name = "balance", nullable = false)
+    @Column(name = "balance")
     private BigDecimal balance;
 
-    @Column(name = "invoice_date", nullable = false)
+    @Column(name = "invoice_date")
     private LocalDate invoiceDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
 }
